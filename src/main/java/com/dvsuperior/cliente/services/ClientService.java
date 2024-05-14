@@ -3,14 +3,12 @@ package com.dvsuperior.cliente.services;
 import com.dvsuperior.cliente.dto.ClientDTO;
 import com.dvsuperior.cliente.entities.Client;
 import com.dvsuperior.cliente.repositories.ClientRepository;
+import com.dvsuperior.cliente.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Service
 public class ClientService {
@@ -20,7 +18,8 @@ public class ClientService {
 
     @Transactional(readOnly = true)
     public ClientDTO findById(Long id){
-        Client client = repository.findById(id).get();
+        Client client = repository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Recurso não encontrado!"));
         return new ClientDTO(client);
     }
 
