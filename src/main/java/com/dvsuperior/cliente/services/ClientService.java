@@ -22,7 +22,7 @@ public class ClientService {
     @Transactional(readOnly = true)
     public ClientDTO findById(Long id){
         Client client = repository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Recurso não encontrado!"));
+                () -> new ResourceNotFoundException("cliente inexistente!"));
         return new ClientDTO(client);
     }
 
@@ -50,14 +50,14 @@ public class ClientService {
             return new ClientDTO(entity);
         }
         catch (ResourceNotFoundException e){
-            throw new ResourceNotFoundException("Recurso não encontrado!");
+            throw new ResourceNotFoundException("cliente inexistente!");
         }
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id){
         if (!repository.existsById(id)){
-            throw new ResourceNotFoundException("Recurso não encontrado");
+            throw new ResourceNotFoundException("cliente inexistente");
         }
         try {
             repository.deleteById(id);
